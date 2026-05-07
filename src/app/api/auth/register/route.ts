@@ -55,9 +55,7 @@ export async function POST(request: Request) {
       role: user.role,
     });
 
-    await setSessionCookie(token);
-
-    return NextResponse.json(
+    const response = NextResponse.json(
       {
         success: true,
         data: {
@@ -71,6 +69,10 @@ export async function POST(request: Request) {
       },
       { status: 201 }
     );
+
+    setSessionCookie(response, token);
+
+    return response;
   } catch {
     return NextResponse.json(
       { success: false, error: "Internal server error" },
